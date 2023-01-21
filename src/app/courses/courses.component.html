@@ -12,13 +12,6 @@
           >
             <h3 matListItemTitle>{{ course.title | titlecase }}</h3>
             <p matListItemLine>{{ course.description }}</p>
-            <button
-              mat-icon-button
-              color="warn"
-              (click)="deleteCourse(course); $event.stopImmediatePropagation()"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
@@ -70,6 +63,27 @@
       </mat-card-content>
       <mat-card-actions>
         <!-- COURSE ACTIONS -->
+        <button mat-button color="primary" (click)="saveCourse(selectedCourse)">
+          Save
+        </button>
+
+        <button
+          mat-button
+          color="primary"
+          (click)="updateCourse(selectedCourse)"
+        >
+          Update
+        </button>
+        <button mat-button color="primary" (click)="reset()">Reset</button>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="
+            deleteCourse(selectedCourse._id); $event.stopImmediatePropagation()
+          "
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
