@@ -1,5 +1,6 @@
 "use strict";
 const model = require("../models/model");
+const mongoose = require("mongoose");
 
 exports.getAll = async (req, res) => {
   const Model = await model.find();
@@ -26,7 +27,7 @@ exports.postDocument = async (req, res) => {
     console.log("worked");
     res.status(201);
     res.send(JSON.stringify(Model));
-    console.log("DataBase: successfuly posted data");
+    console.log("DataBase: successfuly posted data: ", Model);
   } catch (error) {
     res.status(400);
     throw new Error(error);
@@ -34,21 +35,25 @@ exports.postDocument = async (req, res) => {
 };
 
 exports.deleteDocument = async (req, res) => {
-  const id = req.params._id;
+  // const id = JSON.parse(req.params.id);
+  const id = req.params.id;
+  console.log("id is: ", id);
   try {
-    await model.findByIdAndDelete(id);
+    const deletion = await model.findByIdAndDelete({ _id: id });
     res.status(204);
-    res.send(`Document has been deleted`);
-    console.log("Successfully deleted Document");
+    res.send(deletion);
+    console.log("Successfully deleted Document", id);
   } catch (error) {
     res.status(500);
+    console.log("request params: ", req.body);
     console.log("error is in server/controllers/index.js");
     throw new Error(error);
   }
 };
 
 exports.updateDocument = async (req, res) => {
-  const id = req.params._id;
+  // const id = req.body._id;
+  const id = req.params.id;
   try {
     const update = await model.updateOne(
       { _id: id },
@@ -64,7 +69,7 @@ exports.updateDocument = async (req, res) => {
     );
     res.status(200);
     res.send(JSON.stringify(update));
-    console.log("Successfully updated Document");
+    console.log("Successfully updated Document: ", req.body);
   } catch (error) {
     res.status(400);
     throw new Error(error);
