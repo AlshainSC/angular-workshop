@@ -70,17 +70,17 @@
         <button
           mat-button
           color="primary"
+          type="submit"
           (click)="updateCourse(selectedCourse)"
         >
           Update
         </button>
         <button mat-button color="primary" (click)="reset()">Reset</button>
         <button
-          mat-icon-button
+          mat-button
           color="warn"
-          (click)="
-            deleteCourse(selectedCourse._id); $event.stopImmediatePropagation()
-          "
+          type="submit"
+          (click)="deleteCourse(selectedCourse)"
         >
           <mat-icon>delete</mat-icon>
         </button>

@@ -30,8 +30,9 @@ export class DbServiceService {
   }
 
   //find course by id
+  //TODO: implement search utility
   getCourseById(_id: number): Observable<Courses> {
-    return this.http.get<Courses>(`http://localhost:3002/courses/:${_id}`);
+    return this.http.get<Courses>(`http://localhost:3002/courses/${_id}`);
   }
 
   //add course to database
@@ -42,13 +43,21 @@ export class DbServiceService {
   //update course in database
   updateCourse(course: Courses): Observable<Courses> {
     return this.http.put<Courses>(
-      `http://localhost:3002/courses/:${course._id}`,
-      course
+      `http://localhost:3002/courses/${course._id}`,
+      course,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
   }
 
   //delete course from database
-  deleteCourse(_id: number): Observable<Courses> {
-    return this.http.delete<Courses>(`http://localhost:3000/courses/${_id}`);
+  deleteCourse(course: Courses): Observable<Courses> {
+    console.log('service delete method id: ', course._id);
+    return this.http.delete<Courses>(
+      `http://localhost:3002/courses/${course._id}`
+    );
   }
 }

@@ -48,6 +48,7 @@ export class CoursesComponent implements OnInit {
     } else {
       this.addCourse(course);
     }
+    this.reset();
   }
 
   updateCourse(course: Courses) {
@@ -58,16 +59,21 @@ export class CoursesComponent implements OnInit {
           this.getAllCourses();
         })
       )
-      .subscribe(
-        () => {},
-        (error) => this.handleError(error)
-      );
+      // revised to use v8 syntax
+      .subscribe({ error: this.handleError });
   }
 
-  deleteCourse(_id: number) {
-    this.db.deleteCourse(_id).subscribe(() => {
-      this.courses = this.courses.filter((c) => c._id !== _id);
-    });
+  deleteCourse(course: Courses) {
+    this.db
+      .deleteCourse(course)
+      .pipe(
+        tap(() => {
+          this.getAllCourses();
+        })
+      )
+      .subscribe({ error: this.handleError });
+    console.log('component delete method successful');
+    this.reset();
   }
 
   selectCourse(course: Courses) {
@@ -80,7 +86,7 @@ export class CoursesComponent implements OnInit {
   }
 
   handleError(error: any) {
-    console.log(error);
+    console.error(error);
   }
 }
 
