@@ -7,7 +7,7 @@
       <mat-card-content>
         <mat-list>
           <mat-list-item
-            *ngFor="let course of courses"
+            *ngFor="let course of courses$ | async"
             (click)="selectCourse(course)"
           >
             <h3 matListItemTitle>{{ course.title | titlecase }}</h3>
@@ -17,74 +17,14 @@
       </mat-card-content>
     </mat-card>
   </div>
-
   <div class="course-details">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title> Select Course </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <!-- <pre>{{ selectedCourse | json }}</pre> -->
-        <mat-form-field class="full-width">
-          <input
-            matInput
-            placeholder="Course Title"
-            [(ngModel)]="selectedCourse.title"
-            name="title"
-            required
-            type="text"
-          />
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <textarea
-            matInput
-            placeholder="Course Description"
-            [(ngModel)]="selectedCourse.description"
-            name="description"
-            required
-            type="text"
-          ></textarea>
-        </mat-form-field>
-        <section class="full-width">
-          <h4>{{ selectedCourse.percentComplete }}% Complete</h4>
-          <mat-slider class="full-width" min="0" max="100" thumbLabel>
-            <input
-              matSliderThumb
-              class="full-width"
-              [(ngModel)]="selectedCourse.percentComplete"
-            />
-          </mat-slider>
-        </section>
-        <section class="full-width">
-          <mat-checkbox [(ngModel)]="selectedCourse.favorite" name="favorite"
-            >Favorite</mat-checkbox
-          >
-        </section>
-      </mat-card-content>
-      <mat-card-actions>
-        <!-- COURSE ACTIONS -->
-        <button mat-button color="primary" (click)="saveCourse(selectedCourse)">
-          Save
-        </button>
-
-        <button
-          mat-button
-          color="primary"
-          type="submit"
-          (click)="updateCourse(selectedCourse)"
-        >
-          Update
-        </button>
-        <button mat-button color="primary" (click)="reset()">Reset</button>
-        <button
-          mat-button
-          color="warn"
-          type="submit"
-          (click)="deleteCourse(selectedCourse)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-card-actions>
-    </mat-card>
+    <app-course-details
+      [selectedCourse]="selectedCourse"
+      (saveCourse)="saveCourse($event)"
+      (updateCourse)="updateCourse($event)"
+      (deleteCourse)="deleteCourse($event)"
+      (resetCourse)="reset()"
+    >
+    </app-course-details>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Courses } from '../common/models/courses';
 import { DbServiceService } from '../common/services/db/db-service.service';
 
@@ -18,28 +18,43 @@ const emptyCourse: Courses = {
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  courses: Courses[] = [];
+  // courses: Courses[] = [];
+  courses$!: Observable<Courses[]>;
 
   selectedCourse = emptyCourse;
 
   constructor(private db: DbServiceService) {}
 
   ngOnInit(): void {
-    this.getAllCourses();
+    this.loadCourses();
     this.reset();
   }
 
   addCourse(course: Courses) {
-    this.db.addCourse(course).subscribe((course: Courses) => {
-      course.id = this.courses.length + 1;
-      this.courses = [...this.courses, course];
-    });
+    // this.db.addCourse(course).subscribe((course: Courses) => {
+    //   course.id = this.courses.length + 1;
+    //   this.courses = [...this.courses, course];
+    // });
+    this.db
+      .addCourse(course)
+      .pipe(
+        tap(() => {
+          this.loadCourses();
+        })
+      )
+      .subscribe({ error: this.handleError });
   }
 
-  getAllCourses() {
-    this.db.getAllCourses().subscribe((courses: Courses[]) => {
-      this.courses = courses;
-    });
+  // getAllCourses() {
+  //   this.db.getAllCourses().subscribe((courses: Courses[]) => {
+  //     this.courses = courses;
+  //   });
+  // }
+
+  loadCourses() {
+    this.courses$ = this.db
+      .getAllCourses()
+      .pipe(tap((courses) => console.log('courses', courses)));
   }
 
   saveCourse(course: Courses) {
@@ -56,7 +71,7 @@ export class CoursesComponent implements OnInit {
       .updateCourse(course)
       .pipe(
         tap(() => {
-          this.getAllCourses();
+          this.loadCourses();
         })
       )
       // revised to use v8 syntax
@@ -68,7 +83,7 @@ export class CoursesComponent implements OnInit {
       .deleteCourse(course)
       .pipe(
         tap(() => {
-          this.getAllCourses();
+          this.loadCourses();
         })
       )
       .subscribe({ error: this.handleError });
@@ -83,12 +98,15 @@ export class CoursesComponent implements OnInit {
 
   reset() {
     this.selectedCourse = { ...emptyCourse };
+    console.log('reset function called');
   }
 
   handleError(error: any) {
     console.error(error);
   }
 }
+
+//Earlier version of the code
 
 // import { Component, OnInit } from '@angular/core';
 // import { tap } from 'rxjs';

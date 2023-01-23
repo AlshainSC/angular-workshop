@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { HomeComponent } from './home/home.component';
 import { CoursesComponent } from './courses/courses.component';
+import { CourseDetailsComponent } from './courses/course-details/course-details.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,12 @@ import { CoursesComponent } from './courses/courses.component';
     HttpClientModule,
     FormsModule,
   ],
-  declarations: [AppComponent, HomeComponent, CoursesComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    CoursesComponent,
+    CourseDetailsComponent,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
