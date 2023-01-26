@@ -19,6 +19,27 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" opened class="app-sidenav">
     <!-- Sidenav Menu -->
+    <nav>
+      <a
+        mat-button
+        routerLink="/home"
+        routerLinkActive="active"
+        class="nav-link"
+      >
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a
+        mat-button
+        routerLink="/courses"
+        routerLinkActive="active"
+        class="nav-link"
+      >
+        <mat-icon>book</mat-icon>
+        <span>Courses</span>
+      </a>
+    </nav>
   </mat-sidenav>
 
   <div class="container">

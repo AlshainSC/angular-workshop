@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Courses } from '../common/models/courses';
+import { DbServiceService } from '../common/services/db/db-service.service';
 
 @Component({
   selector: 'app-home',
@@ -6,18 +9,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  courseLessons = [
-    { title: 'Hello Angular' },
-    { title: 'Component Fundamentals' },
-    { title: 'Template Driven Forms' },
-    { title: 'Angular Services' },
-    { title: 'Server Communication' },
-    { title: 'Component Driven Architecture' },
-    { title: 'Angular Routing' },
-    { title: 'Unit Testing Fundamentals' },
-  ];
+  courses$!: Observable<Courses[]>;
 
-  constructor() {}
+  constructor(private db: DbServiceService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadCourses();
+  }
+
+  loadCourses() {
+    this.courses$ = this.db.getAllCourses();
+  }
 }
